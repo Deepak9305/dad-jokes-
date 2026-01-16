@@ -3,191 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Joke Generator: Get Random Puns, Dad, & Dark Jokes</title>
-    <meta name="description" content="The ultimate joke generator for an instant laugh! Get endless, random jokes from fun categories like Puns, Dark Humor, Dad Jokes, and Programming.">
-    <meta name="keywords" content="joke generator, random joke, puns, dad jokes, dark jokes, programming jokes, funny jokes">
+    <title>Joke Central: Premium Humor</title>
     
-    <link rel="canonical" href="https://YOUR-URL-HERE/" /> 
-    <meta name="robots" content="index, follow">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://YOUR-URL-HERE/">
-    <meta property="og:title" content="Random Joke Generator: Puns, Dad Jokes & More">
-    <meta property="og:description" content="The ultimate joke generator for an instant laugh! Get endless, random jokes from multiple fun categories.">
-    <meta property="og:image" content="https://YOUR-URL-HERE/social-preview.png">
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://YOUR-URL-HERE/">
-    <meta property="twitter:title" content="Random Joke Generator: Puns, Dad Jokes & More">
-    <meta property="twitter:description" content="The ultimate joke generator for an instant laugh! Get endless, random jokes from multiple fun categories.">
-    <meta property="twitter:image" content="https://YOUR-URL-HERE/social-preview.png">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Random Joke Generator",
-      "url": "https://YOUR-URL-HERE/",
-      "description": "An interactive web application that generates random jokes from various categories like Puns, Dad Jokes, Dark Humor, and Programming using a live API.",
-      "applicationCategory": "EntertainmentApplication",
-      "operatingSystem": "Any"
-    }
-    </script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --primary-color: #3498db; --dark-color: #c0392b; --prog-color: #2ecc71; --pun-color: #9b59b6; }
-        body { font-family: 'Poppins', sans-serif; background-color: #f0f2f5; color: #333; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
-        .container { background-color: #ffffff; padding: 30px 40px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; width: 100%; max-width: 600px; }
-        h1, h2 { color: #2c3e50; }
-        h2 { border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 40px; }
-        .tagline { color: #7f8c8d; margin-bottom: 25px; }
-        .joke-wrapper { position: relative; }
-        .joke-container { background-color: #ecf0f1; border-left: 5px solid var(--primary-color); padding: 20px; padding-top: 45px; border-radius: 8px; margin-bottom: 25px; min-height: 120px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; }
-        #joke-text { font-size: 1.2em; font-weight: 400; color: #34495e; margin: 0; white-space: pre-wrap; transition: opacity 0.4s ease; }
-        .fade-in { animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .action-buttons { position: absolute; top: 10px; right: 10px; display: flex; gap: 8px; }
-        .action-btn { background: #fff; border: 1px solid #ccc; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; opacity: 0.3; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
-        .joke-wrapper:hover .action-btn { opacity: 1; }
-        .action-btn:active { transform: scale(0.9); }
-        .loader { border: 4px solid #f3f3f3; border-radius: 50%; border-top: 4px solid var(--primary-color); width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        /* --- CSS STYLING --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+        /* Header */
+        .main-header {
+            background: #3498db;
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .main-header h1 {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .main-header h1 a { color: #fff; text-decoration: none; }
+
+        /* Content Area & CSS Grid Layout */
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .joke-section {
+            display: grid;
+            grid-template-areas:
+                "ad-top ad-top"
+                "joke-card joke-card"
+                "ad-bottom-left ad-bottom-right";
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .joke-card {
+            grid-area: joke-card;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .joke-text {
+            font-size: 1.6em;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-weight: 700;
+            white-space: pre-wrap;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Ad Spaces */
+        .ad-space {
+            background-color: #ecf0f1;
+            border: 1px dashed #bdc3c7;
+            padding: 15px;
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ad-top { grid-area: ad-top; min-height: 90px; }
+        .ad-bottom-left { grid-area: ad-bottom-left; min-height: 120px; }
+        .ad-bottom-right { grid-area: ad-bottom-right; min-height: 120px; }
+
+        /* Buttons */
+        .buttons-container {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .button-primary {
+            background-color: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .button-primary:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        /* Action Bar */
+        .action-bar {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            filter: grayscale(1);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.2);
+            filter: grayscale(0);
+        }
+
+        /* Favorites List */
+        .favorites-container {
+            width: 100%;
+            max-width: 750px;
+            margin-top: 50px;
+        }
+
+        .fav-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .buttons-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .btn { color: white; border: none; padding: 12px 20px; font-size: 1em; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0,0,0,0.08); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 7px 14px rgba(50,50,93,0.1), 0 3px 6px rgba(0,0,0,0.08); }
-        #dad-btn { background-color: var(--primary-color); }
-        #dark-btn { background-color: var(--dark-color); }
-        #prog-btn { background-color: var(--prog-color); }
-        #pun-btn { background-color: var(--pun-color); }
-        .ad-container { display: flex; justify-content: space-around; width: 100%; max-width: 800px; margin-top: 40px; gap: 20px; flex-wrap: wrap; }
-        .ad-space { width: 200px; height: 200px; background-color: #bdc3c7; border: 2px dashed #95a5a6; display: flex; justify-content: center; align-items: center; color: #7f8c8d; font-weight: 600; border-radius: 8px; }
-        @media (max-width: 650px) { .container { padding: 20px; } }
+
+        /* Footer */
+        .main-footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+
+        @media (max-width: 650px) {
+            .joke-section {
+                grid-template-areas: "ad-top" "joke-card" "ad-bottom-left" "ad-bottom-right";
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>😂 Random Joke Generator</h1>
-        <p class="tagline">Your Daily Dose of Humor from a Live API</p>
-        
-        <div class="joke-wrapper">
-            <div id="joke-container" class="joke-container">
-                <p id="joke-text">Select a category below to get a joke!</p>
-                <div class="loader" style="display: none;"></div>
-            </div>
-            <div class="action-buttons">
-                <button id="copy-btn" class="action-btn" title="Copy joke">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zM-1 7a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1h-15A.5.5 0 0 1-1 7z"/></svg>
-                </button>
-                <button id="share-btn" class="action-btn" title="Share joke">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill" viewBox="0 0 16 16"><path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/></svg>
-                </button>
-            </div>
-        </div>
-        
-        <h2>Joke Categories</h2>
-        <div class="buttons-container">
-            <button class="btn" id="dad-btn">Dad Jokes</button>
-            <button class="btn" id="dark-btn">Dark Jokes</button>
-            <button class="btn" id="prog-btn">Programming</button>
-            <button class="btn" id="pun-btn">Puns</button>
-        </div>
-    </div>
 
-    <div class="ad-container">
-        <div class="ad-space" id="ad-space-1">Ad Space 1</div>
-        <div class="ad-space" id="ad-space-2">Ad Space 2</div>
-        <div class="ad-space" id="ad-space-3">Ad Space 3</div>
-    </div>
+    <header class="main-header">
+        <div class="container">
+            <h1><a href="#">😂 Joke Central</a></h1>
+            <p>High-Rated Humor • Now with Favorites</p>
+        </div>
+    </header>
+
+    <main class="content-area">
+        <section class="joke-section">
+            <div class="ad-space ad-top">Premium Ad Placement</div>
+
+            <div class="joke-card">
+                <div id="joke-container">
+                    <p id="joke-text" class="joke-text">Ready for a laugh?</p>
+                    <div class="loader" id="loader" style="display: none;"></div>
+                </div>
+                
+                <div class="buttons-container">
+                    <button class="button-primary" id="dad-btn">Dad Joke</button>
+                    <button class="button-primary" id="prog-btn" style="background-color: #3498db;">Programming</button>
+                    <button class="button-primary" id="pun-btn" style="background-color: #9b59b6;">Puns</button>
+                </div>
+
+                <div class="action-bar">
+                    <button id="fav-btn" class="action-btn" title="Save to Favorites">❤️</button>
+                    <button id="share-btn" class="action-btn" title="Share on X">🐦</button>
+                </div>
+            </div>
+
+            <div class="ad-space ad-bottom-left">Ad Space</div>
+            <div class="ad-space ad-bottom-right">Ad Space</div>
+        </section>
+
+        <section class="favorites-container">
+            <h3 style="margin-bottom: 15px; color: #2c3e50;">Saved Favorites</h3>
+            <div id="fav-list">
+                </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Joke Central. Built for Laughs.</p>
+        </div>
+    </footer>
 
     <script>
-        const jokeTextEl = document.getElementById('joke-text');
-        const loaderEl = document.querySelector('.loader');
-        const copyBtn = document.getElementById('copy-btn');
-        const shareBtn = document.getElementById('share-btn');
-        
-        // --- NEW: Array to store IDs of seen jokes ---
-        let seenJokes = [];
+        document.addEventListener('DOMContentLoaded', () => {
+            const jokeTextElement = document.getElementById('joke-text');
+            const currentYearElement = document.getElementById('current-year');
+            const loader = document.getElementById('loader');
+            const favList = document.getElementById('fav-list');
+            const fetchedJokes = new Set();
+            
+            // Local Storage Setup
+            let favorites = JSON.parse(localStorage.getItem('jokeFavorites')) || [];
 
-        document.getElementById('dad-btn').addEventListener('click', () => generateJoke('dad'));
-        document.getElementById('dark-btn').addEventListener('click', () => generateJoke('dark'));
-        document.getElementById('prog-btn').addEventListener('click', () => generateJoke('programming'));
-        document.getElementById('pun-btn').addEventListener('click', () => generateJoke('pun'));
+            // Initialize
+            if (currentYearElement) currentYearElement.textContent = new Date().getFullYear();
+            renderFavorites();
 
-        function copyJoke() { /* ... function remains the same ... */ }
-        copyBtn.addEventListener('click', copyJoke);
-        shareBtn.addEventListener('click', async () => { /* ... function remains the same ... */ });
-        
-        // --- UPDATED: Main joke fetching function with anti-repetition logic ---
-        async function generateJoke(category) {
-            loaderEl.style.display = 'block';
-            jokeTextEl.style.display = 'none';
-            jokeTextEl.classList.remove('fade-in');
+            // Event Listeners
+            document.getElementById('dad-btn').addEventListener('click', fetchRedditJoke);
+            document.getElementById('prog-btn').addEventListener('click', () => fetchJokeAPI('Programming'));
+            document.getElementById('pun-btn').addEventListener('click', () => fetchJokeAPI('Pun'));
+            
+            document.getElementById('fav-btn').addEventListener('click', saveToFavorites);
+            document.getElementById('share-btn').addEventListener('click', shareOnTwitter);
 
-            const apiCategory = {
-                dad: 'Pun',
-                dark: 'Dark',
-                programming: 'Programming',
-                pun: 'Pun'
+            // --- CORE LOGIC ---
+
+            async function fetchRedditJoke() {
+                toggleLoading(true);
+                try {
+                    const response = await fetch('https://www.reddit.com/r/dadjokes/top.json?limit=50&t=week');
+                    const data = await response.json();
+                    const posts = data.data.children.filter(p => p.data.selftext.length > 0 && !p.data.stickied);
+                    const randomPost = posts[Math.floor(Math.random() * posts.length)];
+                    displayJoke(`${randomPost.data.title}\n\n${randomPost.data.selftext}`);
+                } catch (err) {
+                    displayJoke("Reddit is busy! Try another category.");
+                }
+                toggleLoading(false);
+            }
+
+            async function fetchJokeAPI(category) {
+                toggleLoading(true);
+                try {
+                    const res = await fetch(`https://v2.jokeapi.dev/joke/${category}?blacklistFlags=racist,sexist`);
+                    const data = await res.json();
+                    const joke = data.type === 'single' ? data.joke : `${data.setup}\n\n${data.delivery}`;
+                    displayJoke(joke);
+                } catch (err) {
+                    displayJoke("Couldn't reach the joke vault!");
+                }
+                toggleLoading(false);
+            }
+
+            // --- FEATURE FUNCTIONS ---
+
+            function saveToFavorites() {
+                const text = jokeTextElement.textContent;
+                if (text && text !== "Ready for a laugh?" && !favorites.includes(text)) {
+                    favorites.push(text);
+                    localStorage.setItem('jokeFavorites', JSON.stringify(favorites));
+                    renderFavorites();
+                }
+            }
+
+            function renderFavorites() {
+                favList.innerHTML = favorites.length === 0 ? '<p style="color: #999;">No favorites yet.</p>' : '';
+                favorites.forEach((joke, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'fav-item';
+                    div.innerHTML = `
+                        <span style="font-size: 0.9em; padding-right: 10px;">${joke.substring(0, 60)}${joke.length > 60 ? '...' : ''}</span>
+                        <button onclick="removeFavorite(${index})" style="background: #ff7675; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Delete</button>
+                    `;
+                    favList.appendChild(div);
+                });
+            }
+
+            window.removeFavorite = (index) => {
+                favorites.splice(index, 1);
+                localStorage.setItem('jokeFavorites', JSON.stringify(favorites));
+                renderFavorites();
             };
 
-            let apiUrl = `https://v2.jokeapi.dev/joke/${apiCategory[category]}`;
-            if (category === 'dark') {
-                apiUrl += '?blacklistFlags=racist,sexist';
+            function shareOnTwitter() {
+                const text = encodeURIComponent(jokeTextElement.textContent);
+                window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
             }
 
-            let jokeData = null;
-            const MAX_RETRIES = 5; // Prevent infinite loops in small categories
+            // --- UI HELPERS ---
 
-            try {
-                // Loop to try fetching a new, unseen joke
-                for (let i = 0; i < MAX_RETRIES; i++) {
-                    const response = await fetch(apiUrl);
-                    const data = await response.json();
-
-                    if (data.error) {
-                        throw new Error('API Error');
-                    }
-
-                    // If the joke has NOT been seen before, use it and break the loop
-                    if (!seenJokes.includes(data.id)) {
-                        jokeData = data;
-                        break;
-                    }
-                }
-
-                // If all retries resulted in seen jokes, just use the last one fetched
-                if (!jokeData) {
-                    const response = await fetch(apiUrl);
-                    jokeData = await response.json();
-                    console.log("Could not find a new joke after several tries. Repetition may occur.");
-                }
-
-                // Add the new joke's ID to our memory
-                seenJokes.push(jokeData.id);
-
-                // Keep the memory from growing too large
-                if (seenJokes.length > 50) {
-                    seenJokes.shift(); // Remove the oldest joke ID
-                }
-
-                const joke = jokeData.type === 'single' ? jokeData.joke : `${jokeData.setup}\n\n${jokeData.delivery}`;
-                jokeTextEl.textContent = joke;
-
-            } catch (error) {
-                jokeTextEl.textContent = 'Oops! Could not fetch a joke. Please try again.';
-            } finally {
-                loaderEl.style.display = 'none';
-                jokeTextEl.style.display = 'block';
-                jokeTextEl.classList.add('fade-in');
+            function displayJoke(text) {
+                jokeTextElement.style.opacity = 0;
+                setTimeout(() => {
+                    jokeTextElement.textContent = text;
+                    jokeTextElement.style.opacity = 1;
+                }, 200);
             }
-        }
+
+            function toggleLoading(isLoading) {
+                loader.style.display = isLoading ? 'block' : 'none';
+                jokeTextElement.style.display = isLoading ? 'none' : 'block';
+            }
+        });
     </script>
-</body>
-</html>
-
-    <script src="script.js"></script>
 </body>
 </html>
