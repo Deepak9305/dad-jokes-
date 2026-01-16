@@ -13,86 +13,208 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
     
     <style>
-        /* (Styles same as previous response - condensed for length) */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Lato', sans-serif; background-color: #f4f7f6; display: flex; flex-direction: column; min-height: 100vh; }
-        #offline-banner { background: #e74c3c; color: white; text-align: center; padding: 10px; display: none; position: sticky; top: 0; z-index: 1000; font-weight: bold; }
-        .main-header { background: #3498db; color: #fff; padding: 20px 0; text-align: center; }
-        .main-header h1 { font-family: 'Permanent Marker', cursive; }
-        .content-area { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 20px 15px; }
-        .joke-card { background: #fff; padding: 30px; border-radius: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); text-align: center; min-height: 300px; display: flex; flex-direction: column; justify-content: center; width: 100%; max-width: 500px; margin-bottom: 25px; }
-        .joke-text { font-size: 1.35em; color: #2c3e50; font-weight: 700; white-space: pre-wrap; margin-bottom: 20px; }
-        .buttons-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .button-primary { background: #27ae60; color: #fff; border: none; height: 55px; border-radius: 14px; font-weight: 700; cursor: pointer; }
-        .action-bar { margin-top: 15px; display: flex; justify-content: space-evenly; border-top: 1px solid #eee; padding-top: 15px; }
-        .action-btn { background: #f8f9fa; border: 1px solid #eee; font-size: 1.4rem; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .fav-item { background: white; padding: 15px; margin-bottom: 12px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .delete-btn { color: #e74c3c; font-size: 0.8em; font-weight: bold; cursor: pointer; }
-        .main-footer { background: #2c3e50; color: #ecf0f1; text-align: center; padding: 20px 0; }
-        .privacy-link { color: #bdc3c7; text-decoration: none; font-size: 0.8em; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: auto; }
+        
+        body { 
+            font-family: 'Lato', sans-serif; 
+            background-color: #f4f7f6; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            color: #2c3e50;
+        }
+
+        #offline-banner { 
+            background: #e74c3c; 
+            color: white; 
+            text-align: center; 
+            padding: 10px; 
+            display: none; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            font-weight: bold; 
+        }
+
+        .main-header { 
+            background: #3498db; 
+            color: #fff; 
+            padding: 20px 0; 
+            text-align: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .main-header h1 { font-family: 'Permanent Marker', cursive; font-size: 2rem; }
+
+        .content-area { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px 15px; 
+        }
+
+        .joke-card { 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 24px; 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08); 
+            text-align: center; 
+            min-height: 320px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            width: 100%; 
+            max-width: 500px; 
+            margin-bottom: 25px; 
+        }
+
+        .joke-text { 
+            font-size: 1.35em; 
+            color: #2c3e50; 
+            font-weight: 700; 
+            white-space: pre-wrap; 
+            margin-bottom: 25px; 
+            line-height: 1.4;
+        }
+
+        .buttons-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+        }
+
+        .button-primary { 
+            background: #27ae60; 
+            color: #fff; 
+            border: none; 
+            height: 55px; 
+            border-radius: 14px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-size: 1rem;
+        }
+
+        .button-primary:active { transform: scale(0.96); opacity: 0.9; }
+
+        .action-bar { 
+            margin-top: 20px; 
+            display: flex; 
+            justify-content: space-evenly; 
+            border-top: 1px solid #eee; 
+            padding-top: 20px; 
+        }
+
+        .action-btn { 
+            background: #f8f9fa; 
+            border: 1px solid #eee; 
+            font-size: 1.5rem; 
+            width: 65px; 
+            height: 65px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer;
+        }
+
+        .fav-item { 
+            background: white; 
+            padding: 20px; 
+            margin-bottom: 15px; 
+            border-radius: 18px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
+        }
+
+        .delete-btn { 
+            color: #e74c3c; 
+            font-size: 0.75em; 
+            font-weight: bold; 
+            cursor: pointer; 
+            display: block; 
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .main-footer { background: #2c3e50; color: #ecf0f1; text-align: center; padding: 25px 0; margin-top: auto; }
+        .privacy-link { color: #bdc3c7; text-decoration: none; font-size: 0.85em; display: block; margin-top: 10px; }
+
+        .loader { 
+            border: 4px solid #f3f3f3; 
+            border-top: 4px solid #3498db; 
+            border-radius: 50%; 
+            width: 45px; 
+            height: 45px; 
+            animation: spin 1s linear infinite; 
+            margin: 20px auto; 
+        }
+
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div id="offline-banner">No Internet Connection</div>
+    <div id="offline-banner">Working Offline Mode</div>
 
-    <header class="main-header"><h1>😂 Joke Central</h1></header>
+    <header class="main-header">
+        <h1>😂 Joke Central</h1>
+    </header>
 
     <main class="content-area">
         <div class="joke-card">
             <div class="loader" id="loader" style="display: none;"></div>
             <p id="joke-text" class="joke-text">Ready for a laugh?</p>
+            
             <div class="buttons-container">
                 <button class="button-primary fetch-btn" data-type="dad">Dad Joke</button>
                 <button class="button-primary fetch-btn" style="background:#3498db" data-type="Programming">Coding</button>
                 <button class="button-primary fetch-btn" style="background:#9b59b6" data-type="Pun">Puns</button>
                 <button class="button-primary fetch-btn" style="background:#e67e22" data-type="Any">Random</button>
             </div>
+
             <div class="action-bar">
                 <button id="fav-btn" class="action-btn">❤️</button>
                 <button id="share-btn" class="action-btn">📤</button>
             </div>
-            <a href="javascript:void(0)" id="report-btn" style="font-size:0.7em; color:#bdc3c7; margin-top:15px; text-decoration:none;">REPORT CONTENT</a>
+
+            <a href="javascript:void(0)" id="report-btn" style="font-size:0.75em; color:#bdc3c7; margin-top:20px; text-decoration:none; font-weight:bold;">REPORT CONTENT</a>
         </div>
 
         <section style="width:100%; max-width:500px;">
-            <h3 style="margin-bottom:10px;">Saved Jokes</h3>
+            <h3 style="margin-bottom:15px; padding-left: 5px;">Saved Jokes</h3>
             <div id="fav-list"></div>
         </section>
     </main>
 
     <footer class="main-footer">
         <p>&copy; <span id="current-year"></span> Joke Central</p>
-        <a href="privacy policy.html" class="privacy-link">Privacy Policy</a>
+        <a href="privacy-policy.html" class="privacy-link">Privacy Policy</a>
     </footer>
 
     <script>
-        // Register Service Worker for Play Store
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js');
-            });
-        }
+        // Network Status Logic
+        window.addEventListener('online', () => document.getElementById('offline-banner').style.display = 'none');
+        window.addEventListener('offline', () => document.getElementById('offline-banner').style.display = 'block');
 
         document.addEventListener('DOMContentLoaded', () => {
             const jokeTextElement = document.getElementById('joke-text');
             const favList = document.getElementById('fav-list');
             const loader = document.getElementById('loader');
+            const reportBtn = document.getElementById('report-btn');
             
             let favorites = JSON.parse(localStorage.getItem('jokeFavorites')) || [];
             document.getElementById('current-year').textContent = new Date().getFullYear();
 
-            const haptic = () => { if (navigator.vibrate) navigator.vibrate(15); };
+            const haptic = () => { if (navigator.vibrate) navigator.vibrate(20); };
 
+            // FETCHING JOKES
             async function fetchJokeAPI(cat) {
                 toggleLoading(true);
                 try {
                     const res = await fetch(`https://v2.jokeapi.dev/joke/${cat}?blacklistFlags=nsfw,religious,political,racist,sexist,explicit`);
                     const data = await res.json();
                     displayJoke(data.type === 'single' ? data.joke : `${data.setup}\n\n${data.delivery}`);
-                } catch { displayJoke("Error fetching joke."); }
+                } catch { displayJoke("No connection? Try a different category or check your internet!"); }
                 toggleLoading(false);
             }
 
@@ -101,10 +223,10 @@
                 try {
                     const res = await fetch('https://www.reddit.com/r/dadjokes/top.json?limit=30&t=day');
                     const data = await res.json();
-                    const posts = data.data.children.filter(p => p.data.selftext);
+                    const posts = data.data.children.filter(p => p.data.selftext && p.data.selftext.length < 300);
                     const p = posts[Math.floor(Math.random() * posts.length)].data;
                     displayJoke(`${p.title}\n\n${p.selftext}`);
-                } catch { displayJoke("Reddit error."); }
+                } catch { displayJoke("Reddit is sleeping. Try Coding or Puns!"); }
                 toggleLoading(false);
             }
 
@@ -118,6 +240,7 @@
                 jokeTextElement.style.display = l ? 'none' : 'block';
             }
 
+            // BUTTON CLICKS
             document.querySelectorAll('.fetch-btn').forEach(b => {
                 b.addEventListener('click', () => {
                     haptic();
@@ -126,10 +249,11 @@
                 });
             });
 
+            // FAVORITES
             document.getElementById('fav-btn').addEventListener('click', () => {
                 haptic();
                 const t = jokeTextElement.textContent;
-                if (!favorites.includes(t) && t.length > 5) {
+                if (t && t !== "Ready for a laugh?" && !favorites.includes(t)) {
                     favorites.unshift(t);
                     localStorage.setItem('jokeFavorites', JSON.stringify(favorites));
                     renderFavs();
@@ -144,14 +268,41 @@
             }
 
             window.removeFav = (i) => {
+                haptic();
                 favorites.splice(i, 1);
                 localStorage.setItem('jokeFavorites', JSON.stringify(favorites));
                 renderFavs();
             };
 
-            document.getElementById('share-btn').addEventListener('click', () => {
+            // PRO SHARE LOGIC
+            document.getElementById('share-btn').addEventListener('click', async () => {
                 haptic();
-                if (navigator.share) navigator.share({ text: jokeTextElement.textContent });
+                const joke = jokeTextElement.textContent;
+                const shareText = `"${joke}"\n\nShared via 😂 Joke Central`;
+
+                if (navigator.share) {
+                    try { await navigator.share({ title: 'Joke Central', text: shareText }); } catch (err) {}
+                } else {
+                    try {
+                        await navigator.clipboard.writeText(shareText);
+                        alert("Joke copied to clipboard!");
+                    } catch (err) { alert("Sharing not available."); }
+                }
+            });
+
+            // REPORT LOGIC (RizzMaster Help Team)
+            reportBtn.addEventListener('click', () => {
+                haptic();
+                const currentJoke = jokeTextElement.textContent;
+                const email = "rizzmasterhelpteam@gmail.com";
+                const subject = encodeURIComponent("Joke Report - Joke Central");
+                const body = encodeURIComponent("I would like to report this joke:\n\n" + currentJoke);
+                
+                // This triggers the native mail client
+                window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+                
+                // Fallback alert for testing on devices without mail apps
+                console.log("Opening mail client for report...");
             });
 
             renderFavs();
