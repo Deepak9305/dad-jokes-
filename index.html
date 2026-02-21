@@ -488,6 +488,60 @@
             color: #fff;
         }
 
+        /* Interactive Elements */
+        .reveal-btn {
+            background: linear-gradient(135deg, var(--accent2), #d97706);
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .reveal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .rating-toast {
+            position: absolute;
+            font-size: 2rem;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-50px) scale(1.5);
+            }
+        }
+
+        .hidden-punchline {
+            filter: blur(8px);
+            transition: filter 0.5s ease;
+            cursor: pointer;
+        }
+
+        .hidden-punchline.revealed {
+            filter: blur(0);
+            cursor: auto;
+        }
+
         /* Modern loading animation */
         .spinner-container {
             display: none;
@@ -603,6 +657,14 @@
 
 <body>
 
+    <!-- Audio Elements -->
+    <audio id="sfx-rimshot" src="audio/rimshot.mp3" preload="auto"></audio>
+    <audio id="sfx-crickets" src="audio/crickets.mp3" preload="auto"></audio>
+    <audio id="sfx-tick" preload="auto">
+        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="
+            type="audio/wav">
+    </audio>
+
     <!-- Background Shapes -->
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
@@ -658,6 +720,15 @@
             </div>
 
             <div class="action-bar">
+                <button id="tts-btn" class="action-btn" aria-label="Read Joke Aloud" title="Read Aloud">
+                    <i class="ri-volume-up-line"></i>
+                </button>
+                <button id="upvote-btn" class="action-btn" aria-label="Good Joke" title="Upvote">
+                    <i class="ri-thumb-up-line"></i>
+                </button>
+                <button id="downvote-btn" class="action-btn" aria-label="Bad Joke" title="Downvote">
+                    <i class="ri-thumb-down-line"></i>
+                </button>
                 <button id="fav-btn" class="action-btn" aria-label="Save to Favorites" title="Save Joke">
                     <i class="ri-heart-3-line"></i>
                 </button>
@@ -727,6 +798,15 @@
             const favList = document.getElementById('fav-list');
             const loader = document.getElementById('loader');
             const favBtnIcon = document.querySelector('#fav-btn i');
+            const ttsBtnIcon = document.querySelector('#tts-btn i');
+
+            // Audio elements
+            const sfxRimshot = document.getElementById('sfx-rimshot');
+            const sfxCrickets = document.getElementById('sfx-crickets');
+
+            // Speech Synthesis
+            const synth = window.speechSynthesis;
+            let currentUtterance = null;
 
             // Initialization
             document.getElementById('current-year').textContent = new Date().getFullYear();
@@ -756,15 +836,38 @@
                     loader.style.display = 'flex';
                     jokeTextElement.style.display = 'none';
                     favBtnIcon.className = 'ri-heart-3-line'; // reset heart
+                    stopTTS(); // Stop reading if loading a new one
                 } else {
                     loader.style.display = 'none';
                     jokeTextElement.style.display = 'flex';
                 }
             }
 
-            function displayJoke(text) {
-                jokeTextElement.textContent = text;
-                localStorage.setItem('lastPremiumJoke', text);
+            function displayJoke(text, setup = null, delivery = null) {
+                if (setup && delivery) {
+                    // Two-part interactive joke
+                    jokeTextElement.innerHTML = `
+                        <div>${UI.escapeHTML(setup)}</div>
+                        <button id="reveal-btn" class="reveal-btn"><i class="ri-eye-line"></i> Reveal Punchline</button>
+                        <div id="punchline" class="hidden-punchline" style="display:none; margin-top:20px;">${UI.escapeHTML(delivery)}</div>
+                    `;
+
+                    document.getElementById('reveal-btn').addEventListener('click', function () {
+                        this.style.display = 'none';
+                        const p = document.getElementById('punchline');
+                        p.style.display = 'block';
+                        setTimeout(() => p.classList.add('revealed'), 50);
+                        playSFX(sfxRimshot);
+
+                        // Add delivery to TTS if playing, or store for later
+                        localStorage.setItem('lastPremiumJoke', `${setup}\n\n${delivery}`);
+                    });
+                    localStorage.setItem('lastPremiumJoke', text);
+                } else {
+                    // Single part joke
+                    jokeTextElement.textContent = text;
+                    localStorage.setItem('lastPremiumJoke', text);
+                }
 
                 // Check if already favorited
                 if (favorites.includes(text)) {
@@ -781,24 +884,100 @@
                 jokeTextElement.style.animation = 'fadeIn 0.5s ease-out';
             }
 
+            // --- Interactive Media Logic ---
+            function playSFX(audioElement) {
+                try {
+                    audioElement.currentTime = 0;
+                    audioElement.play().catch(e => console.warn("Audio play blocked by browser:", e));
+                } catch (e) { }
+            }
+
+            function stopTTS() {
+                if (synth.speaking) {
+                    synth.cancel();
+                    ttsBtnIcon.className = 'ri-volume-up-line';
+                }
+            }
+
+            document.getElementById('tts-btn').addEventListener('click', () => {
+                UI.haptic();
+                if (synth.speaking) {
+                    stopTTS();
+                    return;
+                }
+
+                let textToRead = localStorage.getItem('lastPremiumJoke') || jokeTextElement.textContent;
+                // If punchline is hidden, only read setup for now
+                if (document.getElementById('reveal-btn') && document.getElementById('reveal-btn').style.display !== 'none') {
+                    textToRead = jokeTextElement.children[0].textContent;
+                }
+
+                if (textToRead && !textToRead.includes("Press a category")) {
+                    currentUtterance = new SpeechSynthesisUtterance(textToRead);
+
+                    // Try to find a good English voice
+                    const voices = synth.getVoices();
+                    const enVoice = voices.find(v => v.lang.includes('en-') && !v.name.includes('Google'));
+                    if (enVoice) currentUtterance.voice = enVoice;
+
+                    currentUtterance.rate = 0.9;
+                    currentUtterance.pitch = 1.1;
+
+                    currentUtterance.onstart = () => ttsBtnIcon.className = 'ri-stop-circle-line';
+                    currentUtterance.onend = () => ttsBtnIcon.className = 'ri-volume-up-line';
+                    currentUtterance.onerror = () => ttsBtnIcon.className = 'ri-volume-up-line';
+
+                    synth.speak(currentUtterance);
+                } else {
+                    UI.showToast("Generate a joke first!", "info");
+                }
+            });
+
+            // Rating System
+            document.getElementById('upvote-btn').addEventListener('click', function (e) {
+                UI.haptic();
+                createFloatingEmoji('😂', e.clientX, e.clientY);
+                UI.showToast("Glad you liked it!", "success");
+            });
+
+            document.getElementById('downvote-btn').addEventListener('click', function (e) {
+                UI.haptic();
+                createFloatingEmoji('🍅', e.clientX, e.clientY);
+                playSFX(sfxCrickets);
+            });
+
+            function createFloatingEmoji(emoji, x, y) {
+                const el = document.createElement('div');
+                el.className = 'rating-toast';
+                el.textContent = emoji;
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 1000);
+            }
+
             // --- Fetching Logic ---
             async function fetchJokeAPI(cat) {
                 toggleLoading(true);
                 try {
                     // Add a random seed to bust JokeAPI's caching/predictability for the "Any" or specific categories
+                    const timestamp = new Date().getTime();
                     const separator = cat.includes('?') ? '&' : '?';
-                    const randomizer = `&amount=1&safe-mode`;
+                    const randomizer = `&amount=1&safe-mode&_cb=${timestamp}`;
                     const res = await fetch(`https://v2.jokeapi.dev/joke/${cat}${separator}blacklistFlags=nsfw,religious,political,racist,sexist,explicit${randomizer}`);
                     if (!res.ok) throw new Error("API Error");
                     const data = await res.json();
 
                     if (data.error) throw new Error(data.message);
 
-                    const jokeText = data.type === 'single' ? data.joke : `${data.setup}\n\n${data.delivery}`;
-                    displayJoke(jokeText);
+                    if (data.type === 'twopart') {
+                        displayJoke(null, data.setup, data.delivery);
+                    } else {
+                        displayJoke(data.joke);
+                    }
                 } catch (error) {
-                    displayJoke("Oops! The joke servers are on a coffee break. Try another category or check your connection.");
-                    UI.showToast("Failed to fetch humor", "error");
+                    console.warn("Primary API failed. Falling back to local data...", error);
+                    displayJoke(getRandomLocalJoke('gen'));
                 }
                 toggleLoading(false);
             }
@@ -812,7 +991,8 @@
                     const data = await res.json();
 
                     if (data && data.length > 0) {
-                        displayJoke(`${data[0].setup}\n\n${data[0].punchline}`);
+                        const randIdx = Math.floor(Math.random() * data.length);
+                        displayJoke(null, data[randIdx].setup, data[randIdx].punchline);
                     } else {
                         throw new Error("Empty Array");
                     }
@@ -836,9 +1016,69 @@
 
             // --- Event Listeners ---
             document.querySelectorAll('.fetch-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', async () => {
                     UI.haptic();
                     const type = btn.getAttribute('data-type');
+
+                    if (type === 'Any') {
+                        // Roulette Logic
+                        const allBtns = Array.from(document.querySelectorAll('.fetch-btn')).filter(b => b !== btn);
+                        let ticks = 0;
+                        const maxTicks = 15;
+                        const tickAudio = document.getElementById('sfx-tick');
+
+                        // Disable buttons during spin
+                        document.querySelectorAll('.fetch-btn').forEach(b => b.style.pointerEvents = 'none');
+
+                        const spinInterval = setInterval(() => {
+                            // Reset all
+                            allBtns.forEach(b => b.style.transform = 'scale(1)');
+                            allBtns.forEach(b => b.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)');
+
+                            // Highlight random
+                            const randBtn = allBtns[Math.floor(Math.random() * allBtns.length)];
+                            randBtn.style.transform = 'scale(1.1)';
+                            randBtn.style.boxShadow = '0 0 20px rgba(255,255,255,0.8)';
+
+                            // Play tiny tick sound
+                            try {
+                                tickAudio.currentTime = 0;
+                                // Create a super short synthetic tick using Web Audio API as fallback since downloading tiny ticks fails
+                                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                                const oscillator = audioCtx.createOscillator();
+                                const gainNode = audioCtx.createGain();
+                                oscillator.type = 'square';
+                                oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                                oscillator.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                                oscillator.connect(gainNode);
+                                gainNode.connect(audioCtx.destination);
+                                oscillator.start();
+                                oscillator.stop(audioCtx.currentTime + 0.05);
+                            } catch (e) { }
+
+                            ticks++;
+                            if (ticks >= maxTicks) {
+                                clearInterval(spinInterval);
+                                // Reset visuals
+                                allBtns.forEach(b => {
+                                    b.style.transform = '';
+                                    b.style.boxShadow = '';
+                                    b.style.pointerEvents = 'auto';
+                                });
+                                btn.style.pointerEvents = 'auto'; // Re-enable random button
+
+                                // Fetch the landed category
+                                const finalType = randBtn.getAttribute('data-type');
+                                if (finalType === 'dad') fetchDadJoke();
+                                else fetchJokeAPI(finalType);
+                            }
+                        }, 100);
+
+                        return; // Exit here, let the interval handle the fetch
+                    }
+
                     if (type === 'dad') {
                         fetchDadJoke();
                     } else {
