@@ -785,8 +785,10 @@
             async function fetchJokeAPI(cat) {
                 toggleLoading(true);
                 try {
+                    // Add a random seed to bust JokeAPI's caching/predictability for the "Any" or specific categories
                     const separator = cat.includes('?') ? '&' : '?';
-                    const res = await fetch(`https://v2.jokeapi.dev/joke/${cat}${separator}blacklistFlags=nsfw,religious,political,racist,sexist,explicit`);
+                    const randomizer = `&amount=1&safe-mode`;
+                    const res = await fetch(`https://v2.jokeapi.dev/joke/${cat}${separator}blacklistFlags=nsfw,religious,political,racist,sexist,explicit${randomizer}`);
                     if (!res.ok) throw new Error("API Error");
                     const data = await res.json();
 
@@ -801,21 +803,33 @@
                 toggleLoading(false);
             }
 
-            async function fetchRedditJoke() {
+            async function fetchDadJoke() {
                 toggleLoading(true);
                 try {
-                    const res = await fetch('https://www.reddit.com/r/dadjokes/top.json?limit=30&t=day');
-                    if (!res.ok) throw new Error("Reddit API Error");
+                    // Primary open-source Dad Joke API (Very stable, CORS friendly)
+                    const res = await fetch('https://official-joke-api.appspot.com/jokes/dad/random');
+                    if (!res.ok) throw new Error("Official API Error");
                     const data = await res.json();
-                    const posts = data.data.children.filter(p => p.data.selftext && p.data.selftext.length < 300 && !p.data.over_18);
 
-                    if (posts.length === 0) throw new Error("No short jokes today");
-
-                    const p = posts[Math.floor(Math.random() * posts.length)].data;
-                    displayJoke(`${p.title}\n\n${p.selftext}`);
-                } catch (error) {
-                    displayJoke("Reddit is sleeping. How about a Coding or Pun joke instead?");
-                    UI.showToast("Dad humor currently unavailable", "error");
+                    if (data && data.length > 0) {
+                        displayJoke(`${data[0].setup}\n\n${data[0].punchline}`);
+                    } else {
+                        throw new Error("Empty Array");
+                    }
+                } catch (e) {
+                    console.warn("Primary Dad API failed. Trying Secondary...", e);
+                    // Secondary dedicated Dad Joke API (Sometimes blocks localhost via file://)
+                    try {
+                        const dadRes = await fetch('https://icanhazdadjoke.com/', {
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        if (!dadRes.ok) throw new Error("Secondary API Error");
+                        const dadData = await dadRes.json();
+                        displayJoke(dadData.joke);
+                    } catch (error) {
+                        console.warn("All Dad APIs failed. Falling back to local Dad Jokes...", error);
+                        displayJoke(getRandomLocalJoke('dad'));
+                    }
                 }
                 toggleLoading(false);
             }
@@ -826,7 +840,7 @@
                     UI.haptic();
                     const type = btn.getAttribute('data-type');
                     if (type === 'dad') {
-                        fetchRedditJoke();
+                        fetchDadJoke();
                     } else {
                         fetchJokeAPI(type);
                     }
