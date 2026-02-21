@@ -706,10 +706,6 @@
     <!-- Audio Elements -->
     <audio id="sfx-rimshot" src="audio/rimshot.mp3" preload="auto"></audio>
     <audio id="sfx-crickets" src="audio/crickets.mp3" preload="auto"></audio>
-    <audio id="sfx-tick" preload="auto">
-        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="
-            type="audio/wav">
-    </audio>
 
     <!-- Background Shapes -->
     <div class="bg-shape shape-1"></div>
@@ -742,16 +738,9 @@
                 <button class="button-primary btn-pun fetch-btn" data-type="Pun" aria-label="Fetch Pun">
                     <i class="ri-chat-smile-3-line"></i> Puns
                 </button>
-                <button class="button-primary btn-rand fetch-btn" data-type="Any" aria-label="Fetch Random Joke">
-                    <i class="ri-shuffle-line"></i> Random
-                </button>
                 <button class="button-primary btn-misc fetch-btn" data-type="geek" aria-label="Fetch Geek Joke"
                     style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
                     <i class="ri-terminal-box-line"></i> Geek Jokes
-                </button>
-                <button class="button-primary btn-knock fetch-btn" data-type="Any?contains=knock"
-                    aria-label="Fetch Knock Knock Joke">
-                    <i class="ri-door-open-line"></i> Knock-Knock
                 </button>
                 <button class="button-primary btn-spooky fetch-btn" data-type="Spooky" aria-label="Fetch Spooky Joke">
                     <i class="ri-ghost-line"></i> Spooky
@@ -760,10 +749,6 @@
                     aria-label="Fetch Chuck Norris Truth"
                     style="background: linear-gradient(135deg, #ea580c, #c2410c);">
                     <i class="ri-fire-line"></i> Chuck Norris
-                </button>
-                <button class="button-primary btn-single fetch-btn" data-type="Any?type=single"
-                    aria-label="Fetch One-Liner Joke">
-                    <i class="ri-text-spacing"></i> One-Liners
                 </button>
             </div>
 
@@ -1276,72 +1261,6 @@
                 btn.addEventListener('click', async () => {
                     UI.haptic();
                     const type = btn.getAttribute('data-type');
-
-                    if (type === 'Any') {
-                        // Roulette Logic
-                        const allBtns = Array.from(document.querySelectorAll('.fetch-btn')).filter(b => b !== btn);
-                        let ticks = 0;
-                        const maxTicks = 15;
-                        const tickAudio = document.getElementById('sfx-tick');
-
-                        // Disable buttons during spin
-                        document.querySelectorAll('.fetch-btn').forEach(b => b.style.pointerEvents = 'none');
-
-                        // Initialize AudioContext outside the interval for performance
-                        let audioCtx;
-                        try {
-                            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                        } catch (e) {
-                            console.warn("Web Audio API not supported", e);
-                        }
-
-                        const spinInterval = setInterval(() => {
-                            // Reset all
-                            allBtns.forEach(b => b.style.transform = 'scale(1)');
-                            allBtns.forEach(b => b.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)');
-
-                            // Highlight random
-                            const randBtn = allBtns[Math.floor(Math.random() * allBtns.length)];
-                            randBtn.style.transform = 'scale(1.1)';
-                            randBtn.style.boxShadow = '0 0 20px rgba(255,255,255,0.8)';
-
-                            // Play sharp mechanical click
-                            if (audioCtx) {
-                                try {
-                                    const oscillator = audioCtx.createOscillator();
-                                    const gainNode = audioCtx.createGain();
-                                    oscillator.type = 'triangle'; // Triangle is softer but cleaner for clicks
-                                    oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime);
-                                    oscillator.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-                                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-                                    oscillator.connect(gainNode);
-                                    gainNode.connect(audioCtx.destination);
-                                    oscillator.start();
-                                    oscillator.stop(audioCtx.currentTime + 0.05);
-                                } catch (e) { }
-                            }
-
-                            ticks++;
-                            if (ticks >= maxTicks) {
-                                clearInterval(spinInterval);
-                                // Reset visuals
-                                allBtns.forEach(b => {
-                                    b.style.transform = '';
-                                    b.style.boxShadow = '';
-                                    b.style.pointerEvents = 'auto';
-                                });
-                                btn.style.pointerEvents = 'auto'; // Re-enable random button
-
-                                // Fetch the landed category
-                                const finalType = randBtn.getAttribute('data-type');
-                                if (finalType === 'dad') fetchDadJoke();
-                                else fetchJokeAPI(finalType);
-                            }
-                        }, 100);
-
-                        return; // Exit here, let the interval handle the fetch
-                    }
 
                     if (type === 'dad') {
                         fetchDadJoke();
