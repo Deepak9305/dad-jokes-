@@ -745,8 +745,9 @@
                 <button class="button-primary btn-rand fetch-btn" data-type="Any" aria-label="Fetch Random Joke">
                     <i class="ri-shuffle-line"></i> Random
                 </button>
-                <button class="button-primary btn-misc fetch-btn" data-type="Misc" aria-label="Fetch Misc Joke">
-                    <i class="ri-lightbulb-flash-line"></i> Misc
+                <button class="button-primary btn-misc fetch-btn" data-type="geek" aria-label="Fetch Geek Joke"
+                    style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
+                    <i class="ri-terminal-box-line"></i> Geek Jokes
                 </button>
                 <button class="button-primary btn-knock fetch-btn" data-type="Any?contains=knock"
                     aria-label="Fetch Knock Knock Joke">
@@ -755,9 +756,10 @@
                 <button class="button-primary btn-spooky fetch-btn" data-type="Spooky" aria-label="Fetch Spooky Joke">
                     <i class="ri-ghost-line"></i> Spooky
                 </button>
-                <button class="button-primary btn-xmas fetch-btn" data-type="Christmas"
-                    aria-label="Fetch Christmas Joke">
-                    <i class="ri-gift-line"></i> Christmas
+                <button class="button-primary btn-xmas fetch-btn" data-type="chuck"
+                    aria-label="Fetch Chuck Norris Truth"
+                    style="background: linear-gradient(135deg, #ea580c, #c2410c);">
+                    <i class="ri-fire-line"></i> Chuck Norris
                 </button>
                 <button class="button-primary btn-single fetch-btn" data-type="Any?type=single"
                     aria-label="Fetch One-Liner Joke">
@@ -856,6 +858,143 @@
             const loader = document.getElementById('loader');
             const favBtnIcon = document.querySelector('#fav-btn i');
             const ttsBtnIcon = document.querySelector('#tts-btn i');
+
+            // --- Ultimate Variety System (No-Repeat Logic) ---
+            let seenJokes = JSON.parse(localStorage.getItem('jokeSeenHistory')) || [];
+            const MAX_SEEN_HISTORY = 50;
+
+            function isJokeSeen(text) {
+                // Normalize text for comparison by removing punctuation and extra spaces
+                const cleanText = text.toLowerCase().replace(/[^\w\s]/gi, '').trim();
+                return seenJokes.some(seen => seen.toLowerCase().replace(/[^\w\s]/gi, '').trim() === cleanText);
+            }
+
+            function markJokeSeen(text) {
+                if (!isJokeSeen(text)) {
+                    seenJokes.unshift(text);
+                    if (seenJokes.length > MAX_SEEN_HISTORY) seenJokes.pop();
+                    localStorage.setItem('jokeSeenHistory', JSON.stringify(seenJokes));
+                }
+            }
+
+            // --- Massive Local Fallback Database (100+ Unique Jokes) ---
+            const localDadJokes = [
+                "I'm afraid for the calendar. Its days are numbered.",
+                "My wife said I should do lunges to stay in shape. That would be a big step forward.",
+                "Why do fathers take an extra pair of socks when they go golfing? In case they get a hole in one!",
+                "Singing in the shower is fun until you get soap in your mouth. Then it's a soap opera.",
+                "What do you call a factory that makes okay products? A satisfactory.",
+                "Dear Math, grow up and solve your own problems.",
+                "What did the janitor say when he jumped out of the closet? Supplies!",
+                "Have you heard about the chocolate record player? It sounds pretty sweet.",
+                "I only know 25 letters of the alphabet. I don't know y.",
+                "How do you make a tissue dance? You put a little boogie in it.",
+                "Why did the bullet end up losing his job? He got fired.",
+                "What kind of shoes do ninjas wear? Sneakers.",
+                "How does a penguin build its house? Igloos it together.",
+                "What do you call a belt made out of watches? A waist of time.",
+                "What do you call a pile of cats? A meowntain.",
+                "Why did the scarecrow win an award? Because he was outstanding in his field.",
+                "What do you call a fake noodle? An impasta.",
+                "Why can't a bike stand up by itself? It’s two Tired.",
+                "Why don't skeletons fight each other? They don't have the guts.",
+                "What do you call a pencil with two erasers? Pointless.",
+                "I used to be a baker, but I couldn't make enough dough.",
+                "Why did the math book look sad? Because it had too many problems.",
+                "I'm on a seafood diet. I see food and I eat it.",
+                "What did the ocean say to the beach? Nothing, it just waved.",
+                "Why did the golfer bring two pairs of pants? In case he got a hole in one.",
+                "What do you call a fly without wings? A walk.",
+                "Why did the cow go to outer space? To see the mooooooon.",
+                "What did one wall say to the other? I'll meet you at the corner.",
+                "Why did the chicken cross the playground? To get to the other slide.",
+                "What do you call a bear with no teeth? A gummy bear.",
+                "Why did the tomato turn red? Because it saw the salad dressing.",
+                "How do you organize a space party? You planet.",
+                "Why did the kid throw his clock out the window? He wanted to see time fly.",
+                "What do you call an alligator in a vest? An investigator.",
+                "What do you call an elephant that doesn't matter? An irrelephant.",
+                "How do you catch a squirrel? Climb a tree and act like a nut.",
+                "Why did the picture go to jail? Because it was framed.",
+                "What do you call a sleeping dinosaur? A dino-snore.",
+                "Why do fish live in salt water? Because pepper makes them sneeze.",
+                "What do you call a snowman with a six pack? An abdominal snowman.",
+                "Why did the man put his money in the freezer? He wanted cold hard cash.",
+                "How do you make a lemon drop? Just let it fall.",
+                "What do you call a dog that can do magic? A labracadabrador.",
+                "Why did the bicycle fall over? Because it was two-tired.",
+                "Why do bees have sticky hair? Because they use honeycombs.",
+                "What do you call a skeleton who won't work? Lazy bones.",
+                "Why did the pony get sent to his room? He wouldn't stop horsing around.",
+                "What do you call a sheep with no legs? A cloud.",
+                "Why did the computer go to the doctor? It had a virus.",
+                "What do you call a fish with no eyes? Fsh."
+            ];
+
+            const localGenJokes = [
+                "Real programmers count from 0.",
+                "Why do programmers prefer dark mode? Because light attracts bugs.",
+                "A SQL query walks into a bar, walks up to two tables, and asks, 'Can I join you?'",
+                "How many programmers does it take to change a light bulb? None, it's a hardware problem.",
+                "There are 10 types of people in the world: those who understand binary, and those who don't.",
+                "To understand what recursion is, you must first understand what recursion is.",
+                "A programmer's wife tells him, 'Go to the store and get a loaf of bread. If they have eggs, get a dozen.' He returns with 12 loaves of bread.",
+                "Why did the developer go broke? Because he used up all his cache.",
+                "What is the object-oriented way to become wealthy? Inheritance.",
+                "Why do Java developers wear glasses? Because they don't C#.",
+                "Knock, knock. Who’s there? (long pause) Java.",
+                "An optimist says the glass is half full. A pessimist says the glass is half empty. A programmer says the glass is twice as large as it needs to be.",
+                "Documentation is like sex; when it's good, it's very, very good, and when it's bad, it's better than nothing.",
+                "Why do we programmer's always mix up Halloween and Christmas? Because Oct 31 == Dec 25.",
+                "Hardware is the part of a computer you can kick; software is the part you can only curse at.",
+                "In order to understand recursion, you must first understand recursion.",
+                "Debugging: Being the detective in a crime movie where you are also the murderer.",
+                "A user interface is like a joke. If you have to explain it, it’s not that good.",
+                "0 is false, 1 is true, right? 1.",
+                "Why do web developers always leave a bar? Because of the table layout.",
+                "Why was the JavaScript developer sad? Because he didn't know how to 'null' his feelings.",
+                "Why did the functional programmer get thrown out of the party? Because he had no side effects.",
+                "What do you call a programmer from Finland? Nerdic.",
+                "Why did the HTML coder get lost? He couldn't find his </home>.",
+                "How do you tell an introverted computer scientist from an extroverted one? The extroverted one looks at *your* shoes when he's talking to you.",
+                "Why did the web designer walk out of the restaurant? The table layout was terrible.",
+                "I've got a great joke about UDP, but I don't know if you'll get it.",
+                "A guy walks into a bar and asks for 1.4 root beers. The bartender says, 'I'll have to charge you for a root beer float.' The guy says, 'Make it a double!'",
+                "Why did the programmer quit his job? Because he didn't get arrays (a raise).",
+                "Why do programmers hate nature? It has too many bugs.",
+                "Chuck Norris doesn't call the wrong number. You answer the wrong phone.",
+                "Chuck Norris can drown a fish.",
+                "Chuck Norris once kicked a horse in the chin. Its descendants are now known as Giraffes.",
+                "Chuck Norris is the reason why Waldo is hiding.",
+                "Chuck Norris can lead a horse to water AND make it drink.",
+                "When Chuck Norris does a pushup, he isn’t lifting himself up, he’s pushing the Earth down.",
+                "Chuck Norris can slam a revolving door.",
+                "There is no theory of evolution. Just a list of animals Chuck Norris allows to live.",
+                "Chuck Norris can cut through a hot knife with butter.",
+                "Chuck Norris doesn't wear a watch. He decides what time it is.",
+                "Chuck Norris can light a fire by rubbing two ice cubes together.",
+                "Chuck Norris once won a game of Connect Four in three moves.",
+                "Chuck Norris can make onions cry.",
+                "Chuck Norris has already counted to infinity. Twice.",
+                "Outer space exists because it's afraid to be on the same planet as Chuck Norris.",
+                "Chuck Norris can hear sign language.",
+                "Chuck Norris once got bit by a rattlesnake. After five days of excruciating pain, the snake died.",
+                "Chuck Norris destroyed the periodic table, because he only recognizes the element of surprise.",
+                "Chuck Norris doesn't breathe air. He holds it hostage.",
+                "Chuck Norris can set ants on fire with a magnifying glass. At night."
+            ];
+
+            function getRandomLocalJoke(type) {
+                const arr = type === 'dad' ? localDadJokes : localGenJokes;
+                // Extra variety check for local jokes too
+                let joke = arr[Math.floor(Math.random() * arr.length)];
+                let attempts = 0;
+                while (isJokeSeen(joke) && attempts < 10) {
+                    joke = arr[Math.floor(Math.random() * arr.length)];
+                    attempts++;
+                }
+                return joke;
+            }
 
             // Audio elements
             const sfxRimshot = document.getElementById('sfx-rimshot');
@@ -1018,24 +1157,64 @@
             // --- Fetching Logic ---
             async function fetchJokeAPI(cat) {
                 toggleLoading(true);
-                try {
-                    // Add a random seed to bust JokeAPI's caching/predictability for the "Any" or specific categories
-                    const timestamp = new Date().getTime();
-                    const separator = cat.includes('?') ? '&' : '?';
-                    const randomizer = `&amount=1&safe-mode&_cb=${timestamp}`;
-                    const res = await fetch(`https://v2.jokeapi.dev/joke/${cat}${separator}blacklistFlags=nsfw,religious,political,racist,sexist,explicit${randomizer}`);
-                    if (!res.ok) throw new Error("API Error");
-                    const data = await res.json();
+                let fetchSuccess = false;
+                let attempts = 0;
+                const maxAttempts = 3;
 
-                    if (data.error) throw new Error(data.message);
+                while (!fetchSuccess && attempts < maxAttempts) {
+                    try {
+                        let res, data;
+                        const timestamp = new Date().getTime();
 
-                    if (data.type === 'twopart') {
-                        displayJoke(null, data.setup, data.delivery);
-                    } else {
-                        displayJoke(data.joke);
+                        if (cat === 'geek') {
+                            // Geek Jokes API
+                            res = await fetch(`https://geek-jokes.sameerkumar.website/api?format=json&_cb=${timestamp}`);
+                            data = await res.json();
+                            const jokeCandidate = data.joke;
+                            if (isJokeSeen(jokeCandidate)) { attempts++; continue; }
+                            displayJoke(jokeCandidate);
+                            markJokeSeen(jokeCandidate);
+                            fetchSuccess = true;
+                        } else if (cat === 'chuck') {
+                            // Chuck Norris API
+                            res = await fetch(`https://api.chucknorris.io/jokes/random?_cb=${timestamp}`);
+                            data = await res.json();
+                            const jokeCandidate = data.value;
+                            if (isJokeSeen(jokeCandidate)) { attempts++; continue; }
+                            displayJoke(jokeCandidate);
+                            markJokeSeen(jokeCandidate);
+                            fetchSuccess = true;
+                        } else {
+                            // Primary JokeAPI
+                            const separator = cat.includes('?') ? '&' : '?';
+                            const randomizer = `&amount=1&safe-mode&_cb=${timestamp}`;
+                            res = await fetch(`https://v2.jokeapi.dev/joke/${cat}${separator}blacklistFlags=nsfw,religious,political,racist,sexist,explicit${randomizer}`);
+                            if (!res.ok) throw new Error("API Error");
+                            data = await res.json();
+                            if (data.error) throw new Error(data.message);
+
+                            let setupCandidate, deliveryCandidate, singleCandidate;
+                            if (data.type === 'twopart') {
+                                setupCandidate = data.setup;
+                                deliveryCandidate = data.delivery;
+                                if (isJokeSeen(`${setupCandidate} ${deliveryCandidate}`)) { attempts++; continue; }
+                                displayJoke(null, setupCandidate, deliveryCandidate);
+                                markJokeSeen(`${setupCandidate} ${deliveryCandidate}`);
+                            } else {
+                                singleCandidate = data.joke;
+                                if (isJokeSeen(singleCandidate)) { attempts++; continue; }
+                                displayJoke(singleCandidate);
+                                markJokeSeen(singleCandidate);
+                            }
+                            fetchSuccess = true;
+                        }
+                    } catch (error) {
+                        console.warn("API Attempt failed:", error);
+                        attempts++;
                     }
-                } catch (error) {
-                    console.warn("Primary API failed. Falling back to local data...", error);
+                }
+
+                if (!fetchSuccess) {
                     displayJoke(getRandomLocalJoke('gen'));
                 }
                 toggleLoading(false);
@@ -1043,33 +1222,51 @@
 
             async function fetchDadJoke() {
                 toggleLoading(true);
-                try {
-                    // Primary open-source Dad Joke API (Very stable, CORS friendly)
-                    const timestamp = new Date().getTime();
-                    const res = await fetch(`https://official-joke-api.appspot.com/jokes/dad/random?_cb=${timestamp}`);
-                    if (!res.ok) throw new Error("Official API Error");
-                    const data = await res.json();
+                let fetchSuccess = false;
+                let attempts = 0;
+                const maxAttempts = 3;
 
-                    if (data && data.length > 0) {
-                        const randIdx = Math.floor(Math.random() * data.length);
-                        displayJoke(null, data[randIdx].setup, data[randIdx].punchline);
-                    } else {
-                        throw new Error("Empty Array");
-                    }
-                } catch (e) {
-                    console.warn("Primary Dad API failed. Trying Secondary...", e);
-                    // Secondary dedicated Dad Joke API (Sometimes blocks localhost via file://)
+                while (!fetchSuccess && attempts < maxAttempts) {
                     try {
-                        const dadRes = await fetch('https://icanhazdadjoke.com/', {
-                            headers: { 'Accept': 'application/json' }
-                        });
-                        if (!dadRes.ok) throw new Error("Secondary API Error");
-                        const dadData = await dadRes.json();
-                        displayJoke(dadData.joke);
-                    } catch (error) {
-                        console.warn("All Dad APIs failed. Falling back to local Dad Jokes...", error);
-                        displayJoke(getRandomLocalJoke('dad'));
+                        const timestamp = new Date().getTime();
+                        const res = await fetch(`https://official-joke-api.appspot.com/jokes/dad/random?_cb=${timestamp}`);
+                        if (!res.ok) throw new Error("Official API Error");
+                        const data = await res.json();
+
+                        if (data && data.length > 0) {
+                            const randIdx = Math.floor(Math.random() * data.length);
+                            const setupCandidate = data[randIdx].setup;
+                            const punchlineCandidate = data[randIdx].punchline;
+
+                            if (isJokeSeen(`${setupCandidate} ${punchlineCandidate}`)) { attempts++; continue; }
+
+                            displayJoke(null, setupCandidate, punchlineCandidate);
+                            markJokeSeen(`${setupCandidate} ${punchlineCandidate}`);
+                            fetchSuccess = true;
+                        } else {
+                            throw new Error("Empty Array");
+                        }
+                    } catch (e) {
+                        console.warn("Dad API Attempt failed:", e);
+                        // Secondary dedicated Dad Joke API
+                        try {
+                            const dadRes = await fetch('https://icanhazdadjoke.com/', {
+                                headers: { 'Accept': 'application/json' }
+                            });
+                            if (!dadRes.ok) throw new Error("Secondary API Error");
+                            const dadData = await dadRes.json();
+                            if (isJokeSeen(dadData.joke)) { attempts++; continue; }
+                            displayJoke(dadData.joke);
+                            markJokeSeen(dadData.joke);
+                            fetchSuccess = true;
+                        } catch (error) {
+                            attempts++;
+                        }
                     }
+                }
+
+                if (!fetchSuccess) {
+                    displayJoke(getRandomLocalJoke('dad'));
                 }
                 toggleLoading(false);
             }
