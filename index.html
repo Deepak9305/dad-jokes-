@@ -844,6 +844,8 @@
             }
 
             function displayJoke(text, setup = null, delivery = null) {
+                const fullText = text || `${setup}\n\n${delivery}`;
+
                 if (setup && delivery) {
                     // Two-part interactive joke
                     jokeTextElement.innerHTML = `
@@ -860,17 +862,17 @@
                         playSFX(sfxRimshot);
 
                         // Add delivery to TTS if playing, or store for later
-                        localStorage.setItem('lastPremiumJoke', `${setup}\n\n${delivery}`);
+                        localStorage.setItem('lastPremiumJoke', fullText);
                     });
-                    localStorage.setItem('lastPremiumJoke', text);
+                    localStorage.setItem('lastPremiumJoke', fullText);
                 } else {
                     // Single part joke
-                    jokeTextElement.textContent = text;
-                    localStorage.setItem('lastPremiumJoke', text);
+                    jokeTextElement.textContent = fullText;
+                    localStorage.setItem('lastPremiumJoke', fullText);
                 }
 
                 // Check if already favorited
-                if (favorites.includes(text)) {
+                if (favorites.includes(fullText)) {
                     favBtnIcon.className = 'ri-heart-3-fill';
                     favBtnIcon.style.color = '#f43f5e';
                 } else {
@@ -986,7 +988,8 @@
                 toggleLoading(true);
                 try {
                     // Primary open-source Dad Joke API (Very stable, CORS friendly)
-                    const res = await fetch('https://official-joke-api.appspot.com/jokes/dad/random');
+                    const timestamp = new Date().getTime();
+                    const res = await fetch(`https://official-joke-api.appspot.com/jokes/dad/random?_cb=${timestamp}`);
                     if (!res.ok) throw new Error("Official API Error");
                     const data = await res.json();
 
@@ -1090,7 +1093,7 @@
             // Favorites Handling
             document.getElementById('fav-btn').addEventListener('click', () => {
                 UI.haptic();
-                const t = jokeTextElement.textContent;
+                const t = localStorage.getItem('lastPremiumJoke') || jokeTextElement.textContent;
                 const defaultMsg = "Press a category below to generate your first premium laugh!";
 
                 if (t && t !== defaultMsg && t !== "Oops! The joke servers are on a coffee break. Try another category or check your connection." && t !== "Reddit is sleeping. How about a Coding or Pun joke instead?") {
@@ -1146,7 +1149,7 @@
             // Enhanced Sharing Logic
             document.getElementById('share-btn').addEventListener('click', async () => {
                 UI.haptic();
-                const joke = jokeTextElement.textContent;
+                const joke = localStorage.getItem('lastPremiumJoke') || jokeTextElement.textContent;
                 const defaultMsgs = ["Press a category below to generate your first premium laugh!", "Oops! The joke servers are on a coffee break. Try another category or check your connection.", "Reddit is sleeping. How about a Coding or Pun joke instead?"];
 
                 if (defaultMsgs.includes(joke) || !joke) {
@@ -1180,7 +1183,7 @@
             // Report Logic
             document.getElementById('report-btn').addEventListener('click', () => {
                 UI.haptic();
-                const currentJoke = jokeTextElement.textContent;
+                const currentJoke = localStorage.getItem('lastPremiumJoke') || jokeTextElement.textContent;
                 const email = "rizzmasterhelpteam@gmail.com"; // Given in original code
                 const subject = encodeURIComponent("Joke Report - Joke Central");
                 const body = encodeURIComponent("I would like to report this joke for moderation review:\n\n" + currentJoke);
