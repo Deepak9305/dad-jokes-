@@ -946,7 +946,10 @@
                 "I've got a great joke about UDP, but I don't know if you'll get it.",
                 "A guy walks into a bar and asks for 1.4 root beers. The bartender says, 'I'll have to charge you for a root beer float.' The guy says, 'Make it a double!'",
                 "Why did the programmer quit his job? Because he didn't get arrays (a raise).",
-                "Why do programmers hate nature? It has too many bugs.",
+                "Why do programmers hate nature? It has too many bugs."
+            ];
+
+            const localChuckJokes = [
                 "Chuck Norris doesn't call the wrong number. You answer the wrong phone.",
                 "Chuck Norris can drown a fish.",
                 "Chuck Norris once kicked a horse in the chin. Its descendants are now known as Giraffes.",
@@ -970,7 +973,11 @@
             ];
 
             function getRandomLocalJoke(type) {
-                const arr = type === 'dad' ? localDadJokes : localGenJokes;
+                let arr;
+                if (type === 'dad') arr = localDadJokes;
+                else if (type === 'chuck') arr = localChuckJokes;
+                else arr = localGenJokes;
+
                 // Extra variety check for local jokes too
                 let joke = arr[Math.floor(Math.random() * arr.length)];
                 let attempts = 0;
@@ -1156,6 +1163,12 @@
                             res = await fetch(`https://geek-jokes.sameerkumar.website/api?format=json&_cb=${timestamp}`);
                             data = await res.json();
                             const jokeCandidate = data.joke;
+                            // FILTER: Skip if this API returns a Chuck Norris joke in the Geek category
+                            if (jokeCandidate.toLowerCase().includes("chuck norris")) {
+                                attempts++;
+                                console.warn("Filtered Chuck joke from Geek category");
+                                continue;
+                            }
                             if (isJokeSeen(jokeCandidate)) { attempts++; continue; }
                             displayJoke(jokeCandidate);
                             markJokeSeen(jokeCandidate);
@@ -1200,7 +1213,8 @@
                 }
 
                 if (!fetchSuccess) {
-                    displayJoke(getRandomLocalJoke('gen'));
+                    const localType = (cat === 'geek' || cat === 'Programming' || cat === 'Pun' || cat === 'Spooky') ? 'gen' : cat;
+                    displayJoke(getRandomLocalJoke(localType));
                 }
                 toggleLoading(false);
             }
