@@ -1,0 +1,16 @@
+{
+  "name": "Joke Central | Premium Humour",
+  "short_name": "JokeCentral",
+  "description": "Premium Dad Jokes, Programming Humour, and Puns.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

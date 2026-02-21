@@ -652,6 +652,52 @@
                 height: 55px;
             }
         }
+
+        /* Search & Bulk Management */
+        .mgmt-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 15px 12px 40px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-mgmt {
+            padding: 0 15px;
+            height: 46px;
+            font-size: 0.9rem;
+            border-radius: 12px;
+        }
     </style>
 </head>
 
@@ -740,6 +786,17 @@
 
         <section class="fav-section">
             <h3><i class="ri-bookmark-3-line" style="color:var(--secondary)"></i> Saved Hall of Fame</h3>
+
+            <div class="mgmt-controls">
+                <div class="search-wrapper">
+                    <i class="ri-search-line"></i>
+                    <input type="text" id="fav-search" class="search-input" placeholder="Search saved jokes...">
+                </div>
+                <button id="copy-all-btn" class="button-primary btn-mgmt" title="Copy All Favorites">
+                    <i class="ri-file-copy-line"></i> Copy All
+                </button>
+            </div>
+
             <div id="fav-list">
                 <!-- Favorites injected here -->
             </div>
@@ -1115,30 +1172,66 @@
                 }
             });
 
-            function renderFavs() {
+            function renderFavs(filter = '') {
+                const searchStr = filter.toLowerCase().trim();
+                const filtered = favorites.filter(f => f.toLowerCase().includes(searchStr));
+
                 if (favorites.length === 0) {
                     favList.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding: 20px;">No saved jokes yet. Find a good one and hit the heart!</p>`;
                     return;
                 }
 
-                favList.innerHTML = favorites.map((j, i) => `
-                    <div class="fav-item">
-                        <p>${UI.escapeHTML(j)}</p>
-                        <button class="delete-btn" onclick="removeFav(${i})" aria-label="Remove saved joke">
-                            <i class="ri-delete-bin-line"></i> Remove
-                        </button>
-                    </div>
-                `).join('');
+                if (filtered.length === 0) {
+                    favList.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding: 20px;">No jokes match your search.</p>`;
+                    return;
+                }
+
+                favList.innerHTML = filtered.map((j) => {
+                    const originalIndex = favorites.indexOf(j);
+                    return `
+                        <div class="fav-item">
+                            <p>${UI.escapeHTML(j)}</p>
+                            <button class="delete-btn" onclick="removeFav(${originalIndex})" aria-label="Remove saved joke">
+                                <i class="ri-delete-bin-line"></i> Remove
+                            </button>
+                        </div>
+                    `;
+                }).join('');
             }
+
+            // Search Filter
+            document.getElementById('fav-search').addEventListener('input', (e) => {
+                renderFavs(e.target.value);
+            });
+
+            // Bulk Copy
+            document.getElementById('copy-all-btn').addEventListener('click', async () => {
+                if (favorites.length === 0) {
+                    UI.showToast("No jokes to copy!", "info");
+                    return;
+                }
+                UI.haptic();
+                const allJokes = favorites.join('\n\n---\n\n');
+                try {
+                    await navigator.clipboard.writeText(allJokes);
+                    UI.showToast(`Copied ${favorites.length} jokes!`, "success");
+                } catch (err) {
+                    UI.showToast("Failed to copy. Try again.", "error");
+                }
+            });
 
             window.removeFav = (index) => {
                 UI.haptic();
                 const removedItem = favorites.splice(index, 1)[0];
                 localStorage.setItem('premiumJokeFavorites', JSON.stringify(favorites));
-                renderFavs();
+
+                // Re-render with current search value
+                const searchValue = document.getElementById('fav-search').value;
+                renderFavs(searchValue);
 
                 // Reset heart icon if the deleted joke is currently displayed
-                if (jokeTextElement.textContent === removedItem) {
+                const currentStored = localStorage.getItem('lastPremiumJoke');
+                if (currentStored === removedItem) {
                     favBtnIcon.className = 'ri-heart-3-line';
                     favBtnIcon.style.color = '';
                 }
