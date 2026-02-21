@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Joke Central - Get your daily dose of premium Dad Jokes, Programming Humor, and Puns.">
+    <meta name="description"
+        content="Joke Central - Get your daily dose of premium Dad Jokes, Programming Humor, and Puns.">
     <title>Joke Central | Premium Humor</title>
-    
+
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#4f46e5">
-    
+
     <!-- Modern Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@700&display=swap"
+        rel="stylesheet">
+
     <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
@@ -35,24 +39,37 @@
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            font-family: 'Outfit', sans-serif; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
             background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3));
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
             color: var(--text-main);
             overflow-x: hidden;
         }
 
         @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         /* Abstract Background Shapes */
@@ -64,40 +81,69 @@
             opacity: 0.5;
             animation: float 10s infinite ease-in-out alternate;
         }
-        .shape-1 { top: -100px; left: -100px; width: 400px; height: 400px; background: rgba(79, 70, 229, 0.4); animation-delay: 0s; }
-        .shape-2 { bottom: -150px; right: -100px; width: 500px; height: 500px; background: rgba(16, 185, 129, 0.3); animation-delay: -5s; }
-        .shape-3 { top: 40%; left: 60%; width: 300px; height: 300px; background: rgba(244, 63, 94, 0.3); animation-delay: -2s; }
+
+        .shape-1 {
+            top: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: rgba(79, 70, 229, 0.4);
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            bottom: -150px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: rgba(16, 185, 129, 0.3);
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            top: 40%;
+            left: 60%;
+            width: 300px;
+            height: 300px;
+            background: rgba(244, 63, 94, 0.3);
+            animation-delay: -2s;
+        }
 
         @keyframes float {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-30px) scale(1.1); }
+            0% {
+                transform: translateY(0) scale(1);
+            }
+
+            100% {
+                transform: translateY(-30px) scale(1.1);
+            }
         }
 
-        #offline-banner { 
+        #offline-banner {
             background: rgba(239, 68, 68, 0.9);
             backdrop-filter: blur(10px);
-            color: white; 
-            text-align: center; 
-            padding: 12px; 
-            display: none; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
+            color: white;
+            text-align: center;
+            padding: 12px;
+            display: none;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             font-weight: 600;
             letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .main-header { 
-            padding: 30px 0; 
-            text-align: center; 
+        .main-header {
+            padding: 30px 0;
+            text-align: center;
             position: relative;
             z-index: 10;
         }
 
-        .main-header h1 { 
-            font-family: 'Space Grotesk', sans-serif; 
-            font-size: 2.8rem; 
+        .main-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
             background: linear-gradient(to right, #fff, #a5b4fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -107,7 +153,7 @@
             justify-content: center;
             gap: 10px;
         }
-        
+
         .main-header h1 i {
             -webkit-text-fill-color: initial;
             color: #fbbf24;
@@ -116,17 +162,30 @@
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
         }
 
-        .content-area { 
-            flex-grow: 1; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 10px 20px 40px; 
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 20px 40px;
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
@@ -134,21 +193,21 @@
         }
 
         /* Glassmorphism Card */
-        .joke-card { 
+        .joke-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            padding: 40px 30px; 
-            border-radius: 30px; 
-            box-shadow: var(--glass-shadow); 
-            text-align: center; 
-            min-height: 380px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            width: 100%; 
-            margin-bottom: 40px; 
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: var(--glass-shadow);
+            text-align: center;
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 40px;
             position: relative;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -163,18 +222,21 @@
         .joke-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; height: 4px;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
             background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent1));
         }
 
-        .joke-text { 
-            font-size: 1.5rem; 
-            color: #ffffff; 
-            font-weight: 400; 
-            white-space: pre-wrap; 
-            margin-bottom: 35px; 
+        .joke-text {
+            font-size: 1.5rem;
+            color: #ffffff;
+            font-weight: 400;
+            white-space: pre-wrap;
+            margin-bottom: 35px;
             line-height: 1.6;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             min-height: 100px;
             display: flex;
             align-items: center;
@@ -183,90 +245,150 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .buttons-container { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 15px; 
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
             margin-bottom: 25px;
         }
 
-        .button-primary { 
-            background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff; 
-            height: 60px; 
-            border-radius: 16px; 
-            font-weight: 600; 
+        .button-primary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            height: 55px;
+            border-radius: 14px;
+            font-weight: 600;
             font-family: 'Outfit', sans-serif;
-            cursor: pointer; 
-            font-size: 1.05rem;
+            cursor: pointer;
+            font-size: 0.95rem;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
+            padding: 0 10px;
         }
 
         .button-primary::after {
             content: '';
             position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: skewX(-20deg);
             transition: 0.5s;
         }
 
-        .button-primary:hover::after { left: 150%; }
-
-        .button-primary:active { transform: scale(0.95); }
-
-        .btn-dad { background: linear-gradient(135deg, var(--primary), var(--primary-hover)); border: none; }
-        .btn-code { background: linear-gradient(135deg, var(--secondary), var(--secondary-hover)); border: none; }
-        .btn-pun { background: linear-gradient(135deg, var(--accent1), #e11d48); border: none; }
-        .btn-rand { background: linear-gradient(135deg, var(--accent2), #d97706); border: none; }
-
-        .action-bar { 
-            display: flex; 
-            justify-content: center;
-            gap: 20px;
-            padding-top: 20px; 
-            border-top: 1px solid rgba(255,255,255,0.1);
+        .button-primary:hover::after {
+            left: 150%;
         }
 
-        .action-btn { 
-            background: rgba(255,255,255,0.1); 
-            border: 1px solid rgba(255,255,255,0.2); 
+        .button-primary:active {
+            transform: scale(0.95);
+        }
+
+        .btn-dad {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            border: none;
+        }
+
+        .btn-code {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-hover));
+            border: none;
+        }
+
+        .btn-pun {
+            background: linear-gradient(135deg, var(--accent1), #e11d48);
+            border: none;
+        }
+
+        .btn-rand {
+            background: linear-gradient(135deg, var(--accent2), #d97706);
+            border: none;
+        }
+
+        .btn-misc {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border: none;
+        }
+
+        .btn-dark {
+            background: linear-gradient(135deg, #475569, #1e293b);
+            border: none;
+        }
+
+        .btn-spooky {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            border: none;
+        }
+
+        .btn-xmas {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+            border: none;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            font-size: 1.4rem; 
-            width: 55px; 
-            height: 55px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            font-size: 1.4rem;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(5px);
         }
 
-        .action-btn:hover { 
-            transform: translateY(-5px) scale(1.1); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            background: rgba(255,255,255,0.2);
+        .action-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.2);
         }
-        
-        .action-btn:active { transform: scale(0.9); }
 
-        .action-btn i { transition: color 0.3s ease; }
-        #fav-btn:hover i { color: #f43f5e; }
-        #share-btn:hover i { color: #38bdf8; }
+        .action-btn:active {
+            transform: scale(0.9);
+        }
+
+        .action-btn i {
+            transition: color 0.3s ease;
+        }
+
+        #fav-btn:hover i {
+            color: #f43f5e;
+        }
+
+        #share-btn:hover i {
+            color: #38bdf8;
+        }
 
         .fav-section {
             width: 100%;
@@ -280,17 +402,17 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 10px;
         }
 
-        .fav-item { 
-            background: rgba(255,255,255,0.03); 
+        .fav-item {
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 20px; 
-            margin-bottom: 15px; 
-            border-radius: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             transition: transform 0.2s ease, background 0.2s ease;
@@ -298,7 +420,7 @@
 
         .fav-item:hover {
             transform: translateX(5px);
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .fav-item p {
@@ -307,11 +429,11 @@
             flex-grow: 1;
         }
 
-        .delete-btn { 
-            color: #f87171; 
-            font-size: 0.85rem; 
-            font-weight: 600; 
-            cursor: pointer; 
+        .delete-btn {
+            color: #f87171;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
             align-self: flex-end;
             margin-top: 15px;
             display: flex;
@@ -329,14 +451,14 @@
             color: #fff;
         }
 
-        .main-footer { 
-            background: rgba(0,0,0,0.3); 
+        .main-footer {
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
-            color: var(--text-muted); 
-            text-align: center; 
-            padding: 30px 20px; 
-            margin-top: auto; 
-            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 10;
         }
 
@@ -347,17 +469,19 @@
             margin-top: 15px;
         }
 
-        .footer-link { 
-            color: #94a3b8; 
-            text-decoration: none; 
-            font-size: 0.9rem; 
+        .footer-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
             transition: color 0.2s ease;
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .footer-link:hover { color: #fff; }
+        .footer-link:hover {
+            color: #fff;
+        }
 
         /* Modern loading animation */
         .spinner-container {
@@ -377,7 +501,11 @@
             animation: sp-ani 0.8s infinite linear;
         }
 
-        @keyframes sp-ani { 100% { transform: rotate(1turn); } }
+        @keyframes sp-ani {
+            100% {
+                transform: rotate(1turn);
+            }
+        }
 
         /* Toast Notification System */
         #toast-container {
@@ -403,35 +531,70 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeOut 0.3s ease 2.7s forwards;
             opacity: 1;
         }
 
-        .toast.success i { color: #10b981; }
-        .toast.error i { color: #f43f5e; }
-        .toast.info i { color: #38bdf8; }
+        .toast.success i {
+            color: #10b981;
+        }
+
+        .toast.error i {
+            color: #f43f5e;
+        }
+
+        .toast.info i {
+            color: #38bdf8;
+        }
 
         @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fadeOut {
-            to { opacity: 0; transform: translateY(-10px); }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
         }
 
         /* Mobile Adjustments */
         @media (max-width: 480px) {
-            .main-header h1 { font-size: 2.2rem; }
-            .joke-text { font-size: 1.3rem; }
-            .joke-card { padding: 30px 20px; border-radius: 20px; }
-            .buttons-container { gap: 10px; }
-            .button-primary { font-size: 0.95rem; height: 55px; }
+            .main-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .joke-text {
+                font-size: 1.3rem;
+            }
+
+            .joke-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            .buttons-container {
+                gap: 10px;
+            }
+
+            .button-primary {
+                font-size: 0.95rem;
+                height: 55px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Background Shapes -->
@@ -447,18 +610,19 @@
 
     <main class="content-area">
         <div class="joke-card">
-            
+
             <div class="spinner-container" id="loader">
                 <div class="spinner"></div>
             </div>
-            
+
             <p id="joke-text" class="joke-text">Press a category below to generate your first premium laugh!</p>
-            
+
             <div class="buttons-container">
                 <button class="button-primary btn-dad fetch-btn" data-type="dad" aria-label="Fetch Dad Joke">
                     <i class="ri-parent-line"></i> Dad Joke
                 </button>
-                <button class="button-primary btn-code fetch-btn" data-type="Programming" aria-label="Fetch Coding Joke">
+                <button class="button-primary btn-code fetch-btn" data-type="Programming"
+                    aria-label="Fetch Coding Joke">
                     <i class="ri-code-s-slash-line"></i> Coding
                 </button>
                 <button class="button-primary btn-pun fetch-btn" data-type="Pun" aria-label="Fetch Pun">
@@ -466,6 +630,19 @@
                 </button>
                 <button class="button-primary btn-rand fetch-btn" data-type="Any" aria-label="Fetch Random Joke">
                     <i class="ri-shuffle-line"></i> Random
+                </button>
+                <button class="button-primary btn-misc fetch-btn" data-type="Misc" aria-label="Fetch Misc Joke">
+                    <i class="ri-lightbulb-flash-line"></i> Misc
+                </button>
+                <button class="button-primary btn-dark fetch-btn" data-type="Dark" aria-label="Fetch Dark Joke">
+                    <i class="ri-moon-clear-line"></i> Dark
+                </button>
+                <button class="button-primary btn-spooky fetch-btn" data-type="Spooky" aria-label="Fetch Spooky Joke">
+                    <i class="ri-ghost-line"></i> Spooky
+                </button>
+                <button class="button-primary btn-xmas fetch-btn" data-type="Christmas"
+                    aria-label="Fetch Christmas Joke">
+                    <i class="ri-gift-line"></i> Christmas
                 </button>
             </div>
 
@@ -490,7 +667,8 @@
     <footer class="main-footer">
         <p>&copy; <span id="current-year"></span> Premium Joke Central. Developed with laughter.</p>
         <div class="footer-links">
-            <a href="javascript:void(0)" id="report-btn" class="footer-link"><i class="ri-flag-line"></i> Report Joke</a>
+            <a href="javascript:void(0)" id="report-btn" class="footer-link"><i class="ri-flag-line"></i> Report
+                Joke</a>
             <a href="privacy policy.html" class="footer-link"><i class="ri-shield-check-line"></i> Privacy Policy</a>
         </div>
     </footer>
@@ -502,11 +680,11 @@
         // --- UI Utilities System ---
         const UI = {
             toastContainer: document.getElementById('toast-container'),
-            
+
             showToast(message, type = 'info') {
                 const toast = document.createElement('div');
                 toast.className = `toast ${type}`;
-                
+
                 let iconClass = 'ri-information-line';
                 if (type === 'success') iconClass = 'ri-checkbox-circle-line';
                 if (type === 'error') iconClass = 'ri-error-warning-line';
@@ -514,17 +692,17 @@
 
                 toast.innerHTML = `<i class="${iconClass}"></i> <span>${message}</span>`;
                 this.toastContainer.appendChild(toast);
-                
+
                 // Cleanup after animation finishes maping to CSS 3s (0.3s delay + 2.7s animation)
                 setTimeout(() => {
                     if (toast.parentNode) toast.parentNode.removeChild(toast);
                 }, 3000);
             },
-            
+
             haptic() {
-                if (navigator.vibrate) try { navigator.vibrate(25); } catch(e){}
+                if (navigator.vibrate) try { navigator.vibrate(25); } catch (e) { }
             },
-            
+
             escapeHTML(str) {
                 return str.replace(/[&<>'"]/g, tag => ({
                     '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
@@ -538,7 +716,7 @@
             const favList = document.getElementById('fav-list');
             const loader = document.getElementById('loader');
             const favBtnIcon = document.querySelector('#fav-btn i');
-            
+
             // Initialization
             document.getElementById('current-year').textContent = new Date().getFullYear();
             let favorites = JSON.parse(localStorage.getItem('premiumJokeFavorites')) || [];
@@ -563,7 +741,7 @@
 
             // State management
             function toggleLoading(isLoading) {
-                if(isLoading) {
+                if (isLoading) {
                     loader.style.display = 'flex';
                     jokeTextElement.style.display = 'none';
                     favBtnIcon.className = 'ri-heart-3-line'; // reset heart
@@ -576,7 +754,7 @@
             function displayJoke(text) {
                 jokeTextElement.textContent = text;
                 localStorage.setItem('lastPremiumJoke', text);
-                
+
                 // Check if already favorited
                 if (favorites.includes(text)) {
                     favBtnIcon.className = 'ri-heart-3-fill';
@@ -585,7 +763,7 @@
                     favBtnIcon.className = 'ri-heart-3-line';
                     favBtnIcon.style.color = ''; // reset to default css hover rules
                 }
-                
+
                 // Trigger animation reset
                 jokeTextElement.style.animation = 'none';
                 jokeTextElement.offsetHeight; /* trigger reflow */
@@ -599,12 +777,12 @@
                     const res = await fetch(`https://v2.jokeapi.dev/joke/${cat}?blacklistFlags=nsfw,religious,political,racist,sexist,explicit`);
                     if (!res.ok) throw new Error("API Error");
                     const data = await res.json();
-                    
+
                     if (data.error) throw new Error(data.message);
-                    
+
                     const jokeText = data.type === 'single' ? data.joke : `${data.setup}\n\n${data.delivery}`;
                     displayJoke(jokeText);
-                } catch(error) { 
+                } catch (error) {
                     displayJoke("Oops! The joke servers are on a coffee break. Try another category or check your connection.");
                     UI.showToast("Failed to fetch humor", "error");
                 }
@@ -618,12 +796,12 @@
                     if (!res.ok) throw new Error("Reddit API Error");
                     const data = await res.json();
                     const posts = data.data.children.filter(p => p.data.selftext && p.data.selftext.length < 300 && !p.data.over_18);
-                    
-                    if(posts.length === 0) throw new Error("No short jokes today");
-                    
+
+                    if (posts.length === 0) throw new Error("No short jokes today");
+
                     const p = posts[Math.floor(Math.random() * posts.length)].data;
                     displayJoke(`${p.title}\n\n${p.selftext}`);
-                } catch(error) { 
+                } catch (error) {
                     displayJoke("Reddit is sleeping. How about a Coding or Pun joke instead?");
                     UI.showToast("Dad humor currently unavailable", "error");
                 }
@@ -635,7 +813,7 @@
                 btn.addEventListener('click', () => {
                     UI.haptic();
                     const type = btn.getAttribute('data-type');
-                    if(type === 'dad') {
+                    if (type === 'dad') {
                         fetchRedditJoke();
                     } else {
                         fetchJokeAPI(type);
@@ -648,7 +826,7 @@
                 UI.haptic();
                 const t = jokeTextElement.textContent;
                 const defaultMsg = "Press a category below to generate your first premium laugh!";
-                
+
                 if (t && t !== defaultMsg && t !== "Oops! The joke servers are on a coffee break. Try another category or check your connection." && t !== "Reddit is sleeping. How about a Coding or Pun joke instead?") {
                     if (!favorites.includes(t)) {
                         favorites.unshift(t);
@@ -669,7 +847,7 @@
             });
 
             function renderFavs() {
-                if(favorites.length === 0) {
+                if (favorites.length === 0) {
                     favList.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding: 20px;">No saved jokes yet. Find a good one and hit the heart!</p>`;
                     return;
                 }
@@ -689,13 +867,13 @@
                 const removedItem = favorites.splice(index, 1)[0];
                 localStorage.setItem('premiumJokeFavorites', JSON.stringify(favorites));
                 renderFavs();
-                
+
                 // Reset heart icon if the deleted joke is currently displayed
                 if (jokeTextElement.textContent === removedItem) {
                     favBtnIcon.className = 'ri-heart-3-line';
                     favBtnIcon.style.color = '';
                 }
-                
+
                 UI.showToast("Joke removed", "info");
             };
 
@@ -704,8 +882,8 @@
                 UI.haptic();
                 const joke = jokeTextElement.textContent;
                 const defaultMsgs = ["Press a category below to generate your first premium laugh!", "Oops! The joke servers are on a coffee break. Try another category or check your connection.", "Reddit is sleeping. How about a Coding or Pun joke instead?"];
-                
-                if(defaultMsgs.includes(joke) || !joke) {
+
+                if (defaultMsgs.includes(joke) || !joke) {
                     UI.showToast("Nothing to share yet!", "info");
                     return;
                 }
@@ -714,22 +892,22 @@
 
                 // Try native Web Share API first
                 if (navigator.share) {
-                    try { 
-                        await navigator.share({ title: 'Joke Central', text: shareText }); 
+                    try {
+                        await navigator.share({ title: 'Joke Central', text: shareText });
                         UI.showToast("Shared successfully!", "success");
                         return; // Exit if share API worked
                     } catch (err) {
                         // User cancelled or failed, fall through to clipboard
                         console.log("Share API cancelled/failed", err);
                     }
-                } 
-                
+                }
+
                 // Fallback to clipboard
                 try {
                     await navigator.clipboard.writeText(shareText);
                     UI.showToast("Joke copied to clipboard!", "success");
-                } catch (err) { 
-                    UI.showToast("Failed to copy text. Please copy manually.", "error"); 
+                } catch (err) {
+                    UI.showToast("Failed to copy text. Please copy manually.", "error");
                 }
             });
 
@@ -740,7 +918,7 @@
                 const email = "rizzmasterhelpteam@gmail.com"; // Given in original code
                 const subject = encodeURIComponent("Joke Report - Joke Central");
                 const body = encodeURIComponent("I would like to report this joke for moderation review:\n\n" + currentJoke);
-                
+
                 window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
                 UI.showToast("Opening mail client...", "info");
             });
@@ -752,4 +930,5 @@
         });
     </script>
 </body>
+
 </html>
