@@ -738,7 +738,7 @@
                 <button class="button-primary btn-pun fetch-btn" data-type="Pun" aria-label="Fetch Pun">
                     <i class="ri-chat-smile-3-line"></i> Puns
                 </button>
-                <button class="button-primary btn-misc fetch-btn" data-type="geek" aria-label="Fetch Geek Joke"
+                <button class="button-primary btn-misc fetch-btn" data-type="Misc" aria-label="Fetch Geek Joke"
                     style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
                     <i class="ri-terminal-box-line"></i> Geek Jokes
                 </button>
@@ -1158,22 +1158,7 @@
                         let res, data;
                         const timestamp = new Date().getTime();
 
-                        if (cat === 'geek') {
-                            // Geek Jokes API
-                            res = await fetch(`https://geek-jokes.sameerkumar.website/api?format=json&_cb=${timestamp}`);
-                            data = await res.json();
-                            const jokeCandidate = data.joke;
-                            // FILTER: Skip if this API returns a Chuck Norris joke in the Geek category
-                            if (jokeCandidate.toLowerCase().includes("chuck norris")) {
-                                attempts++;
-                                console.warn("Filtered Chuck joke from Geek category");
-                                continue;
-                            }
-                            if (isJokeSeen(jokeCandidate)) { attempts++; continue; }
-                            displayJoke(jokeCandidate);
-                            markJokeSeen(jokeCandidate);
-                            fetchSuccess = true;
-                        } else if (cat === 'chuck') {
+                        if (cat === 'chuck') {
                             // Chuck Norris API
                             res = await fetch(`https://api.chucknorris.io/jokes/random?_cb=${timestamp}`);
                             data = await res.json();
@@ -1213,7 +1198,7 @@
                 }
 
                 if (!fetchSuccess) {
-                    const localType = (cat === 'geek' || cat === 'Programming' || cat === 'Pun' || cat === 'Spooky') ? 'gen' : cat;
+                    const localType = (cat === 'Misc' || cat === 'Programming' || cat === 'Pun' || cat === 'Spooky') ? 'gen' : cat;
                     displayJoke(getRandomLocalJoke(localType));
                 }
                 toggleLoading(false);
@@ -1250,7 +1235,10 @@
                         // Secondary dedicated Dad Joke API
                         try {
                             const dadRes = await fetch('https://icanhazdadjoke.com/', {
-                                headers: { 'Accept': 'application/json' }
+                                headers: { 
+                                    'Accept': 'application/json',
+                                    'User-Agent': 'Dad Jokes App (https://github.com/Deepak9305/dad-jokes-)'
+                                }
                             });
                             if (!dadRes.ok) throw new Error("Secondary API Error");
                             const dadData = await dadRes.json();
